@@ -268,6 +268,9 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
         let oldCurrentIndex: Int
         let virtualPage: Int
         if self.initialIndex >= 0 {
+            guard isViewLoaded, view.window != nil else {
+                return
+            }
             oldCurrentIndex = self.currentIndex
             virtualPage = self.initialIndex
             moveToViewController(at: self.initialIndex)
