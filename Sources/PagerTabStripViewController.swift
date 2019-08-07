@@ -283,7 +283,7 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
         let changeCurrentIndex = newCurrentIndex != oldCurrentIndex
 
         if let progressiveDelegate = self as? PagerTabStripIsProgressiveDelegate, pagerBehaviour.isProgressiveIndicator {
-            let (fromIndex, toIndex, scrollPercentage): : (Int, Int, CGFloat)
+            let (fromIndex, toIndex, scrollPercentage) : (Int, Int, CGFloat)
             if self.initialIndex >= 0 {
                 (fromIndex, toIndex, scrollPercentage) = (oldCurrentIndex, newCurrentIndex, 1.0)
             } else {
