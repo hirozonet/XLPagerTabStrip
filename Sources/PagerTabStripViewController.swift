@@ -266,19 +266,22 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
 
         let oldCurrentIndex: Int
         let virtualPage: Int
+        let newCurrentIndex: Int
         if isViewLoaded, view.window != nil, self.currentIndex != self.preCurrentIndex {
             oldCurrentIndex = self.currentIndex
             virtualPage = self.preCurrentIndex
+            newCurrentIndex = pageFor(virtualPage: virtualPage)
+            currentIndex = newCurrentIndex
         } else {
             oldCurrentIndex = self.currentIndex
             virtualPage = self.virtualPageFor(contentOffset: self.containerView.contentOffset.x)
+            newCurrentIndex = pageFor(virtualPage: virtualPage)
+            currentIndex = newCurrentIndex
+            preCurrentIndex = currentIndex
         }
-        let newCurrentIndex = pageFor(virtualPage: virtualPage)
-        currentIndex = newCurrentIndex
         if self.isViewRotating, self.pageBeforeRotate != self.currentIndex {
             self.pageBeforeRotate = self.currentIndex
         }
-        preCurrentIndex = currentIndex
         let changeCurrentIndex = newCurrentIndex != oldCurrentIndex
 
         if let progressiveDelegate = self as? PagerTabStripIsProgressiveDelegate, pagerBehaviour.isProgressiveIndicator {
