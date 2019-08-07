@@ -57,6 +57,7 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
     open weak var datasource: PagerTabStripDataSource?
 
     open var pagerBehaviour = PagerTabStripBehaviour.progressive(skipIntermediateViewControllers: true, elasticIndicatorLimit: true)
+    open var initialIndex = -1
 
     open private(set) var viewControllers = [UIViewController]()
     open private(set) var currentIndex = 0
@@ -266,22 +267,18 @@ open class PagerTabStripViewController: UIViewController, UIScrollViewDelegate {
 
         let oldCurrentIndex: Int
         let virtualPage: Int
-        let newCurrentIndex: Int
-        if isViewLoaded, view.window != nil, self.currentIndex != self.preCurrentIndex {
+        if self.initialIndex >= 0 {
             oldCurrentIndex = self.currentIndex
-            virtualPage = self.preCurrentIndex
-            newCurrentIndex = pageFor(virtualPage: virtualPage)
-            moveToViewController(at: newCurrentIndex)
+            virtualPage = self.initialIndex
+            moveToViewController(at: self.initialIndex)
+            self.initialIndex = -1
         } else {
             oldCurrentIndex = self.currentIndex
             virtualPage = self.virtualPageFor(contentOffset: self.containerView.contentOffset.x)
-            newCurrentIndex = pageFor(virtualPage: virtualPage)
         }
+        let newCurrentIndex = pageFor(virtualPage: virtualPage)
         currentIndex = newCurrentIndex
         preCurrentIndex = currentIndex
-        if self.isViewRotating, self.pageBeforeRotate != self.currentIndex {
-            self.pageBeforeRotate = self.currentIndex
-        }
         let changeCurrentIndex = newCurrentIndex != oldCurrentIndex
 
         if let progressiveDelegate = self as? PagerTabStripIsProgressiveDelegate, pagerBehaviour.isProgressiveIndicator {
